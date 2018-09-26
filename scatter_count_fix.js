@@ -772,6 +772,11 @@ $.each(data, function (index, data_detail) {
         data_detail.marker.size.shift();
         data_detail.marker.size.push(new_format);
     });
+    $.each(data_detail.text, function (index03, text) {
+        let new_format = parseInt(text);
+        data_detail.text.shift();
+        data_detail.text.push(new_format);
+    });
 });
 console.log(data);
 
