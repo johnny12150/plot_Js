@@ -760,24 +760,50 @@ var data = [{
     ]
 },];
 
+let maxsize = 0;
+
 $.each(data, function (index, data_detail) {
     $.each(data_detail.marker.color, function (index01, color) {
         let new_format = parseInt(color);
-        console.log(typeof new_format);
+        // console.log(typeof new_format);
         data_detail.marker.color.shift();
         data_detail.marker.color.push(new_format);
     });
+
     $.each(data_detail.marker.size, function (index02, size) {
         let new_format = parseInt(size);
+        // data_detail.marker.size[index02] = new_format;
         data_detail.marker.size.shift();
         data_detail.marker.size.push(new_format);
+        if (index02 === data_detail.marker.size.length - 1) {
+            // The new spread operator(...) is a shorter way of writing the apply solution to get the maximum of an array
+            // @ref: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Math/max
+            //計算max size
+            if (Math.max(...data_detail.marker.size) > maxsize)
+                maxsize = Math.max(...data_detail.marker.size);
+        }
     });
+
     $.each(data_detail.text, function (index03, text) {
         let new_format = parseInt(text);
         data_detail.text.shift();
         data_detail.text.push(new_format);
     });
+
+    if (index === data.length - 1)
+        resize();
 });
+
+// reformat size with weight
+function resize() {
+    console.log(data);
+    $.each(data, function (index, data_detail) {
+        $.each(data_detail.marker.size, function (index04, size) {
+            data_detail.marker.size[index04] = parseInt(size / maxsize * 60);
+        });
+    });
+}
+
 console.log(data);
 
 // plot的名稱
